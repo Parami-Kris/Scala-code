@@ -1,6 +1,6 @@
 import scala.io.StdIn.{readLine, readInt}
 import scala.sys.process.processInternal
-
+object ebBill{
 val domestic = Array(1.0, 2.5, 4.0, 6.0);
 val commercial = Array(2.0, 4.5, 6.0, 7.0);
 
@@ -12,17 +12,14 @@ class Consumer(id: String, name: String, consumerType: String) {
         return _calc(totalUsage);
     }
     def _calc(totalUsage: Int): Double = {
-        if totalUsage <= 100 then
-            return totalUsage * (if consumerType == "domestic" then domestic(0) else commercial(0))
-        else if totalUsage <= 200 then
-            val extra = totalUsage - 100;
-            return (extra * (if consumerType == "domestic" then domestic(1) else commercial(1))) + _calc(100);
-        else if totalUsage <= 500 then
-            val extra = totalUsage - 200;
-            return (extra * (if consumerType == "domestic" then domestic(2) else commercial(2))) + _calc(200);
+        if (totalUsage <= 100)
+            return totalUsage * (if (consumerType == "domestic") domestic(0) else commercial(0))
+        else if (totalUsage <= 200)
+            return totalUsage * (if (consumerType == "domestic") domestic(1) else commercial(1));
+        else if (totalUsage <= 500)
+            return totalUsage * (if (consumerType == "domestic") domestic(2) else commercial(2));
         else
-            val extra = totalUsage - 500;
-            return (extra * (if consumerType == "domestic" then domestic(3) else commercial(3))) + _calc(500);
+            return totalUsage* (if (consumerType == "domestic")domestic(3) else commercial(3));
     }
     def getData() = {
         println("Kindly enter previous month reading.");
@@ -39,7 +36,7 @@ class Consumer(id: String, name: String, consumerType: String) {
     }
 }
 
-@main def BillGenerator() = {
+def main(Args:Array[String]) {
     println("Welcome!");
     println("Kindly enter consumer name.");
     val consumerName: String = readLine();
@@ -47,11 +44,12 @@ class Consumer(id: String, name: String, consumerType: String) {
     val consumerID: String = readLine();
     println("Kindly enter consumer type (domestic / commercial).");
     val consumerType: String = readLine();
-    if consumerType != "domestic" && consumerType != "commercial" then
+    if (consumerType != "domestic" && consumerType != "commercial") {
         println("Consumer type can only be domestic / commercial.");
-        sys.exit(1);
+        sys.exit(1);}
     val consumer = new Consumer(consumerID, consumerName, consumerType);
     consumer.getData();
     val total = consumer.calc();
     consumer.display(total);
+}
 }
